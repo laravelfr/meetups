@@ -70,7 +70,7 @@ isFoo('bar'); // false
 ```
 
 En gros vous pouvez soit `var_dump(foo('bar') === 'baz');` et voir si c'est bien true,
-soit (et c'est mieux) vous pouvez mettre en place rapidement des tests et faire un vrai `assertEquals('baz', foo('bar'))`
+soit (et c'est mieux) vous pouvez mettre en place rapidement des tests et faire un vrai `assertSame('baz', foo('bar'))`
 ou `assertTrue/assertFalse(isFoo('bar'))`.
 
 L'idéal serait de bosser en TDD évidemment, et ça devrait faire l'objet d'un autre workshop (si si, j'y crois).
@@ -78,44 +78,47 @@ L'idéal serait de bosser en TDD évidemment, et ça devrait faire l'objet d'un 
 ### Exercice 1
 Construire une classe qui permet de faire :
 ```php
-function camelCase($string)
-{
-    return (string) Str::on($string)
-        ->replace('_', ' ')
-        ->ucwords()
-        ->replace(' ', '')
-        ->lcfirst();
-}
+$string = (string) Str::on('my_string')
+    ->replace('_', ' ')
+    ->ucwords()
+    ->replace(' ', '')
+    ->lcfirst();
 
-camelCase('my_string') === 'myString'; // true
+$string === 'myString'; // true
 ```
-### Exercice 1.5
+### Exercice 2
 
-Implémenter `camelCase` dans cette classe :
+Ecrire `camelCase` et `toString` dans cette classe pour que :
 ```php
-(string) Str::camelCase('my_string') === 'myString'; // true
 Str::on('my_string')->camelCase()->toString() === 'myString'; // true
 ```
 
-### Exercice 2
+Ecrire `toCamelCase` dans cette classe pour que :
+```php
+Str::toCamelCase('my_string') === 'myString'; // true
+```
+
+Indice : l'idéal ici serait d'utiliser une magic method histoire de pas avoir à écrire X fois le même genre de méthode statique ! 
+
+### Exercice 2.5
 Faire en sorte que toutes les cases passent dans la même méthode.
 ```php
-Str::camelCase('my_string') === 'myString'; // true
-Str::camelCase('myString') === 'myString'; // true
-Str::camelCase('my-string') === 'myString'; // true
-Str::camelCase('my string') === 'myString'; // true
-Str::camelCase('My String') === 'myString'; // true
+Str::toCamelCase('my_string') === 'myString'; // true
+Str::toCamelCase('myString') === 'myString'; // true
+Str::toCamelCase('my-string') === 'myString'; // true
+Str::toCamelCase('my string') === 'myString'; // true
+Str::toCamelCase('My String') === 'myString'; // true
 ```
 
 ### Exercice 3
-Mettre en place la fonction `snakeCase` qui fonctionne de la même façon :
+Mettre en place la fonction `toSnakeCase` qui fonctionne de la même façon :
 
 ```php
-Str::snakeCase('my_string') === 'my_string'; // true
-Str::snakeCase('myString') === 'my_string'; // true
-Str::snakeCase('my-string') === 'my_string'; // true
-Str::snakeCase('my string') === 'my_string'; // true
-Str::snakeCase('My String') === 'my_string'; // true
+Str::toSnakeCase('my_string') === 'my_string'; // true
+Str::toSnakeCase('myString') === 'my_string'; // true
+Str::toSnakeCase('my-string') === 'my_string'; // true
+Str::toSnakeCase('my string') === 'my_string'; // true
+Str::toSnakeCase('My String') === 'my_string'; // true
 ```
 
 Indices : 
@@ -124,14 +127,14 @@ Indices :
 2. Si vraiment vous avez du mal : http://regexr.com/3ghnd 
 
 ### Exercice 4
-Mettre en place la fonction `slugCase`:
+Mettre en place la fonction `toSlugCase`:
 
 ```php
-Str::slugCase('my_string') === 'my-string'; // true
-Str::slugCase('myString') === 'my-string'; // true
-Str::slugCase('my-string') === 'my-string'; // true
-Str::slugCase('my string') === 'my-string'; // true
-Str::slugCase('My String') === 'my-string'; // true
+Str::toSlugCase('my_string') === 'my-string'; // true
+Str::toSlugCase('myString') === 'my-string'; // true
+Str::toSlugCase('my-string') === 'my-string'; // true
+Str::toSlugCase('my string') === 'my-string'; // true
+Str::toSlugCase('My String') === 'my-string'; // true
 ```
 
 Indice : on n'est vraiment pas loin de `snakeCase`, ça peut valoir le coup de factoriser.
@@ -143,11 +146,11 @@ Indice : on n'est vraiment pas loin de `snakeCase`, ça peut valoir le coup de f
 Mettre en place la fonction `studlyCase`:
 
 ```php
-Str::studlyCase('my_string') === 'MyString'; // true
-Str::studlyCase('myString') === 'MyString'; // true
-Str::studlyCase('my-string') === 'MyString'; // true
-Str::studlyCase('my string') === 'MyString'; // true
-Str::studlyCase('My String') === 'MyString'; // true
+Str::toStudlyCase('my_string') === 'MyString'; // true
+Str::toStudlyCase('myString') === 'MyString'; // true
+Str::toStudlyCase('my-string') === 'MyString'; // true
+Str::toStudlyCase('my string') === 'MyString'; // true
+Str::toStudlyCase('My String') === 'MyString'; // true
 ```
 
 Indice : on est vraiment pas loin de `camelCase`, ça peut valoir le coup de refactoriser.
